@@ -1,15 +1,12 @@
-package com.codergeshu.train.ticketing.system.utils;
+package com.codergeshu.plane.ticket.system.utils;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 
 /**
- * @Project: StationTicketingSystem
- * @Date: 2020/2/23 16:27
- * @author: Eric
- * @Description: TODO 实现对数据库的连接与操作工具类
+ * @Project: ticketSystem
+ * @Date: 2023/10/21 18:49
+ * @author: Scavengers
+ * @Description: 数据库连接工具
  */
 public class SQLHelper {
 
@@ -20,15 +17,16 @@ public class SQLHelper {
 
     //加载驱动，建立连接
     private static void buildConnection() {
-        //数据库配置信息
-        String driver = "com.mysql.cj.jdbc.Driver";
-        String url = "jdbc:mysql://localhost:3306/train?serverTimezone=GMT";
-        String user = "root", password = "123456";
         try {
-            Class.forName(driver);
-            conn = DriverManager.getConnection(url, user, password);
-            System.out.println("数据库连接成功");
-        } catch (Exception e) {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            System.out.println("数据库驱动加载成功");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        try {
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/ticketSystem?useSSL=false", "root", "root123!");
+            System.out.println("连接成功");
+        } catch (SQLException e) {
             e.printStackTrace();
         }
     }
@@ -44,6 +42,7 @@ public class SQLHelper {
         try {
             pre = conn.prepareStatement(sql);
             rs = pre.executeQuery();
+//            System.out.println(rs);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -75,9 +74,9 @@ public class SQLHelper {
         buildConnection();
         Object obj = null;
         try {
-            pre= conn.prepareStatement(singleSql);
+            pre = conn.prepareStatement(singleSql);
             rs = pre.executeQuery();
-            if (rs.next()){
+            if (rs.next()) {
                 obj = rs.getObject(1);
             }
         } catch (Exception ex) {
@@ -92,18 +91,22 @@ public class SQLHelper {
      */
     public static void closeConnection() {
         try {
-            if(rs != null && !rs.isClosed()){
+            if (rs != null && !rs.isClosed()) {
                 rs.close();
             }
-            if(pre != null && !pre.isClosed()){
+            if (pre != null && !pre.isClosed()) {
                 pre.close();
             }
-            if (conn != null && !conn.isClosed()){
+            if (conn != null && !conn.isClosed()) {
                 conn.close();
             }
             System.out.println("数据库连接已关闭");
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void main(String[] args) {
+        buildConnection();
     }
 }

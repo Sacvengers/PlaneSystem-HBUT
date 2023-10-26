@@ -1,10 +1,10 @@
-package com.codergeshu.train.ticketing.system.entity;
+package com.codergeshu.plane.ticket.system.entity;
 
 /**
- * @Project: StationTicketingSystem
- * @Date: 2020/2/23 17:06
- * @author: Eric
- * @Description: TODO 用户实体类
+ * @Project: ticketSystem
+ * @Date: 2023/10/20 18:49
+ * @author: Scavengers
+ * @Description: 用户实体类
  */
 public class Users {
     private String usertel;
@@ -13,7 +13,6 @@ public class Users {
     private String usergender;
     private int usertypeno;
     private String userid;
-    private int idtypeno;
 
     public String getUsertel() {
         return usertel;
@@ -47,27 +46,11 @@ public class Users {
         this.usergender = usergender;
     }
 
-    public int getUsertypeno() {
-        return usertypeno;
-    }
-
-    public void setUsertypeno(int usertypeno) {
-        this.usertypeno = usertypeno;
-    }
-
     public String getUserid() {
         return userid;
     }
 
     public void setUserid(String userid) {
         this.userid = userid;
-    }
-
-    public int getIdtypeno() {
-        return idtypeno;
-    }
-
-    public void setIdtypeno(int idtypeno) {
-        this.idtypeno = idtypeno;
     }
 }

@@ -1,25 +1,24 @@
-package com.codergeshu.train.ticketing.system.dao;
+package com.codergeshu.plane.ticket.system.dao;
 
-import com.codergeshu.train.ticketing.system.utils.SQLHelper;
-import com.codergeshu.train.ticketing.system.entity.Users;
+import com.codergeshu.plane.ticket.system.entity.Users;
+import com.codergeshu.plane.ticket.system.utils.SQLHelper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * @Project: StationTicketingSystem
- * @Date: 2020/2/23 17:18
- * @author: Eric
- * @Description: TODO 对用户信息的数据库操作类
+ * @Project: ticketSystem
+ * @Date: 2023/10/20 18:49
+ * @author: Scavengers
+ * @Description: 用户Dao
  */
 public class UsersDao {
     //判断用户是否存在以及密码是否输入正确
     public boolean userValidate(String tel, String pwd, int type) {
         boolean existed = false;
-        String mysql = "select usertel,password from users ";
-        mysql += "where usertel='" + tel + "'" + " and password='" + pwd + "'";
-        mysql += " and usertypeno='" + type + "'";
+        String mysql = "select tel,pwd from Passenger ";     //查找用户是否存在
+        mysql += "where tel='" + tel + "'" + " and pwd='" + pwd + "'";
         System.out.println(mysql);
         try {
             ResultSet rs = SQLHelper.executeQuery(mysql);
@@ -36,31 +35,31 @@ public class UsersDao {
 
     //通过用户手机号获取用户信息
     public Users userQueryByTel(String usertel) {
-        String mysql = "select * from users where usertel='" + usertel + "'";
+        String mysql = "select * from Passenger where tel='" + usertel + "'";
         System.out.println(mysql);
         return getUsers(mysql).get(0);
     }
 
     //通过身份证号来获取用户信息
     public Users userQueryById(String userid) {
-        String mysql = "select * from users where userid='" + userid + "'";
+        String mysql = "select * from Passenger where identityID='" + userid + "'";
         System.out.println(mysql);
         return getUsers(mysql).get(0);
     }
 
     //获得全部用户信息
     public ArrayList<Users> userQueryAll() {
-        String mysql = "select * from users";
+        String mysql = "select * from Passenger";
         return getUsers(mysql);
     }
 
     //更新用户信息(用于管理员)
     public int updateUser(String usertel, String password, String username,
                           String usergender, int usertypeno, String userid) {
-        String mysql = "update users set usertel='" + usertel + "',password='" + password + "',";
-        String mysql1 = "username='" + username + "',usergender='" + usergender + "',";
-        String mysql2 = "usertypeno=" + usertypeno + ",idtypeno=0";
-        String mysql3 = " where userid='" + userid + "'";
+        String mysql = "update users set tel='" + usertel + "',pwd='" + password + "',";
+        String mysql1 = "name='" + username + "',gender='" + usergender + "',";
+        String mysql2 = "type=" + usertypeno + ",type=0";
+        String mysql3 = " where identityID='" + userid + "'";
         mysql = mysql + mysql1 + mysql2 + mysql3;
         System.out.println(mysql);
         return SQLHelper.executeUpdate(mysql);
@@ -75,26 +74,25 @@ public class UsersDao {
     //修改自我信息
     public int modifySelfInfo(String usertel, String password,
                               String username, String userid) {
-        String mysql = "update users set usertel='" + usertel +
-                "',password='" + password + "',username='" + username + "' " +
-                "where userid='" + userid + "'";
+        String mysql = "update users set tel='" + usertel +
+                "',pwd='" + password + "',name='" + username + "' " +
+                "where identiyuID='" + userid + "'";
         System.out.println(mysql);
         return SQLHelper.executeUpdate(mysql);
     }
 
     //查询用户是否存在，不存在返回false
-    public boolean userExisted(String usertel) {
-        String mysql = "select * from users where usertel='" + usertel + "'";
+    public boolean userExisted(String tel) {
+        String mysql = "select * from Passenger where tel='" + tel + "'";
         System.out.println(mysql);
         Object obj = SQLHelper.executeSingleQuery(mysql);
-        return obj == null;
+        return obj != null;
     }
 
     //注册用户信息，返回注册是否成功
-    public boolean register(String tel, String password, String name, String gender, int usertype, String id, int idtype) {
-        String mysql = "insert into users values('" + tel +
-                "','" + password + "','" + name + "','" + gender + "'," +
-                usertype + ",'" + id + "'," + idtype + ");";
+    public boolean register(String tel, String password, String name, String gender, String bitrh, String id) {
+        String mysql = "insert into Passenger values('" + id +
+                "','" + name + "','" + gender + "','" + bitrh + "','" + tel + "','" + password + "');";
         System.out.println(mysql);
         int rs = 0;//0表示插入失败
         try {
@@ -112,13 +110,11 @@ public class UsersDao {
             ResultSet rs = SQLHelper.executeQuery(mysql);
             while (rs.next()) {
                 Users user = new Users();
-                user.setUsertel(rs.getString(1));
-                user.setPassword(rs.getString(2));
-                user.setUsername(rs.getString(3));
-                user.setUsergender(rs.getString(4));
-                user.setUsertypeno(rs.getInt(5));
-                user.setUserid(rs.getString(6));
-                user.setIdtypeno(rs.getInt(7));
+                user.setUsertel(rs.getString(5));
+                user.setPassword(rs.getString(6));
+                user.setUsername(rs.getString(2));
+                user.setUsergender(rs.getString(3));
+                user.setUserid(rs.getString(1));
                 users.add(user);
             }
             SQLHelper.closeConnection();

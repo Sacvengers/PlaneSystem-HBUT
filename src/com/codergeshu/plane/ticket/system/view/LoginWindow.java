@@ -1,18 +1,19 @@
-package com.codergeshu.train.ticketing.system.view;
+package com.codergeshu.plane.ticket.system.view;
 
-import java.awt.*;
-import java.awt.event.*;
+import com.codergeshu.plane.ticket.system.dao.UsersDao;
+import com.codergeshu.plane.ticket.system.entity.Users;
+import com.codergeshu.plane.ticket.system.utils.Background;
+
 import javax.swing.*;
-
-import com.codergeshu.train.ticketing.system.dao.*;
-import com.codergeshu.train.ticketing.system.utils.Background;
-import com.codergeshu.train.ticketing.system.entity.Users;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
- * @Project: StationTicketingSystem
- * @Date: 2020/2/23 18:44
- * @author: Eric
- * @Description: TODO 登录界面类
+ * @Project: ticketSystem
+ * @Date: 2023/10/20 18:49
+ * @author: Scavengers
+ * @Description: 登陆界面
  */
 public class LoginWindow extends JFrame implements ActionListener {
 
@@ -26,17 +27,17 @@ public class LoginWindow extends JFrame implements ActionListener {
     public LoginWindow(String title) {
         //设置登录界面题头和符号
         setTitle(title);
-        String iconSrc = "picture/logo1.jpg";
+        String iconSrc = "picture/logo1.png";
         ImageIcon icon = new ImageIcon(iconSrc);
         setIconImage(icon.getImage());
 
         //自定义设置主界面主面板的背景
-        String bgdSrc = "picture/rail5.jpg";
+        String bgdSrc = "picture/img.png";
         ImageIcon background = new ImageIcon(bgdSrc);
         Background.setBackgroundPicture(this, background);
 
         //界面显示信息面板
-        JLabel lbl_show = new JLabel("售票登陆系统");
+        JLabel lbl_show = new JLabel("飞机售票系统");
         lbl_show.setForeground(Color.WHITE);
         lbl_show.setFont(new Font("楷体", Font.PLAIN, 65));
         lbl_show.setHorizontalAlignment(JLabel.CENTER);
@@ -64,7 +65,7 @@ public class LoginWindow extends JFrame implements ActionListener {
         //4.信息输入框
         txt_tel = new JTextField(15);
         txt_password = new JPasswordField(20);
-        com_role = new JComboBox<>(new String[]{"乘客", "管理员"});
+        com_role = new JComboBox<>(new String[]{"乘客"});
         //5.用户信息面板（排版）
         JPanel jp_userInfo = new JPanel();
         jp_userInfo.setOpaque(false);//将面板背景设计为透明，因为要显示自定义的背景图片
@@ -127,12 +128,6 @@ public class LoginWindow extends JFrame implements ActionListener {
             return;
         }
 
-        //注册判断
-        if (e.getSource() == btn_register) {
-            RegisterWindow RegisterWindow = new RegisterWindow("注册为乘客");
-            return;
-        }
-
         //取消登陆
         if (e.getSource() == btn_cancel) {
             txt_tel.setText("");
@@ -163,17 +158,11 @@ public class LoginWindow extends JFrame implements ActionListener {
             JOptionPane.showMessageDialog(this, "输入信息有误", "提醒", JOptionPane.WARNING_MESSAGE, failed);
             return;
         }
-        //如果用户存在，判断是哪种用户类型，并进入用户界面
-        if (type == PASSENGER) {
-            user = usersDao.userQueryByTel(userTel);
-            JOptionPane.showMessageDialog(this, "欢迎您！  " + userTel + " 用户！", "登陆成功", JOptionPane.PLAIN_MESSAGE, success);
-            new PassengerWindow("用户");
-            this.dispose();
-        } else if (type == ADMIN) {
-            JOptionPane.showMessageDialog(this, "欢迎您！  " + userTel + " 管理员！", "登陆成功", JOptionPane.PLAIN_MESSAGE, success);
-            new AdminWindow("管理员");
-            this.dispose();
-        }
+
+        user = usersDao.userQueryByTel(userTel);
+        JOptionPane.showMessageDialog(this, "欢迎您！  " + userTel + " 用户！", "登陆成功", JOptionPane.PLAIN_MESSAGE, success);
+        new PassengerWindow("用户");
+        this.dispose();
     }
 }
 

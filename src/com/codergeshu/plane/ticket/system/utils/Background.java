@@ -1,13 +1,13 @@
-package com.codergeshu.train.ticketing.system.utils;
+package com.codergeshu.plane.ticket.system.utils;
 
 import javax.swing.*;
 import java.awt.*;
 
 /**
- * @Project: StationTicketingSystem
- * @Date: 2020/2/23 19:47
- * @author: Eric
- * @Description: TODO 设置背景图片类
+ * @Project: ticketSystem
+ * @Date: 2023/10/21 18:49
+ * @author: Scavengers
+ * @Description: 设置背景
  */
 public class Background {
     //设置背景
